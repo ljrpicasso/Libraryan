@@ -1,0 +1,57 @@
+$ rails new libraryan -T -d postgresql --skip-test-unit
+$ cd libraryan/
+$ vim Gemfile
+	-- add the following as necessary:
+		group :assets do
+		  gem 'sass-rails',   '~> 3.2.3'
+		  gem 'coffee-rails', '~> 3.2.1'
+
+		  # Add these gems
+		  gem 'compass-rails'
+		  gem 'zurb-foundation'
+		end
+$ bundle
+$ rails g foundation:install
+	This will create foundation_and_overrides.scss inside app/assets/stylesheets/ 
+	in your project. This file will be imported into application.css in the 
+	app/assets/stylesheets/ sprockets manifest.
+$ rails g foundation:layout
+	This will provide an application layout that sets the width for mobile devices. 
+	The generated file will replace application.html.erb inside app/views/layouts/.
+$ vim Gemfile
+	-- add the following as necessary:
+		gem 'simple_form'
+$ bundle
+$ rails g simple_form:install --foundation
+$ rails g controller welcome index
+$ vim config/routes.rb
+	-- add:
+		root to: 'welcome#index'
+$ rm public/index.html		
+		
+$ vim config/database.yml
+	-- Change dev and test to use sqlite, for simplicity
+		# SQLite version 3.x
+		#   gem install sqlite3
+		#
+		#   Ensure the SQLite 3 gem is defined in your Gemfile
+		#   gem 'sqlite3'
+		development:
+		  adapter: sqlite3
+		  database: db/development.sqlite3
+		  pool: 5
+		  timeout: 5000
+$ vim Gemfile
+		group :development, :test do
+		  gem 'sqlite3'
+		end
+
+		group :production do
+		  gem 'pg'
+		end
+$ rake db:create
+$ rake db:migrate
+
+
+rails s
+visit localhost:3000
